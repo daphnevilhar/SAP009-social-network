@@ -64,7 +64,6 @@ export default () => {
 
       .catch((error) => {
         if (error.code === '') {
-          console.log(error.code);
           errorMessageEmail.innerHTML = '';
         } else if (error.code === 'auth/wrong-password') {
           errorMessagePassword.innerHTML = 'Senha incorreta';

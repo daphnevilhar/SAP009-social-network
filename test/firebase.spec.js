@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from 'firebase/auth';
 
 import {
@@ -48,6 +49,7 @@ describe('signInWithGoogle', () => {
 describe('signUp', () => {
   it('deve criar uma conta com nome, email e senha', async () => {
     createUserWithEmailAndPassword.mockResolvedValue();
+    updateProfile.mockResolvedValue();
     const mockAuth = { currentUser: {} };
     getAuth.mockReturnValue(mockAuth);
 
@@ -55,10 +57,10 @@ describe('signUp', () => {
     const email = 'teste@email.com';
     const senha = '1234560';
 
-    await signUp(nome, email, senha);
+    await signUp(email, senha, nome);
 
     expect(createUserWithEmailAndPassword).toHaveBeenCalledTimes(1);
     expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(mockAuth, email, senha);
-    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(mockAuth.currentUser, { nome });
+    expect(updateProfile).toHaveBeenCalledWith(mockAuth.currentUser, { displayName: nome });
   });
 });

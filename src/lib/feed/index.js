@@ -14,8 +14,8 @@ export default () => {
 
   const template = `
     <header class='homeheader'>
-      <img src='./lib/assets/pata-de-cachorro.png' alt='logo' class='icons' />
-      <img src='./lib/assets/menu.png' alt='menu' class='icons' />
+      <img src='./lib/assets/paw.png' alt='logo' class='icons' />
+      <img class='icons' src='./lib/assets/signout.png' id='signout' /img>
       
     </header>
     <main class='feed'>
@@ -27,9 +27,6 @@ export default () => {
       </section>
     </main>
     <footer class='homefooter'>
-      <button id='signout'>Sair</button>
-      <img src='./lib/assets/home.png' alt='home' class='icons' />
-      <img src='./lib/assets/profile.png' alt='perfil' class='icons' />
     </footer>
     `;
 
@@ -39,21 +36,29 @@ export default () => {
     const postList = container.querySelector('.feed__post-list');
     const templatePost = `
       <section class='post__card' data-postcard='${post.id}' id='${post.id}'>
-        <div class='post__card__info'
+        <div class='post__card__info'>
           <p id='post-username'>${post.username}</p>
           <p id='post-date'>${post.date}</p>
         </div>
         <div data-text='${post.id}' class='post__card__text'>
-          <p data-posted='${post.id}' id='post-text'>${post.post}</p>
+          <textarea disabled  class='posted-text' data-posted='${post.id}' id='post-text${post.id}'>${post.post}</textarea>
         </div>
         <div data-buttons='${post.id}' class='post__card__buttons'>
-          <button data-like='${post.id}'id='btn-like'>Curtir</button>
-          ${post.userId === auth.currentUser.uid ? `
-          <button data-edit='${post.id}' id='edit'>Editar</button>
-          <button data-delete='${post.id}' id='delete'>Excluir</button>
-          ` : ''}
-
+          <div class='likes'>
+            <img class='icons-btn' src='./lib/assets/like.png' alt='editar' data-like='${post.id}'id='btn-like' /img> 
+            <p class='likes-number'>${post.likes.length}</p>
           </div>
+          ${post.userId === auth.currentUser.uid ? `
+          <div class='edit-delete'>
+          <img class='icons-btn' src='./lib/assets/edit.png' alt='editar' data-edit='${post.id}' id='edit${post.id}' /img>
+          <img class='icons-btn' src='./lib/assets/delete.png' alt='editar' data-delete='${post.id}' id='delete${post.id}' /img>
+          ` : ''}
+          </div>
+        </div>
+        <div class='hidden' id='save-cancel${post.id}'>
+          <button id='save${post.id}'>Salvar</button>
+          <button id='cancel${post.id}'>Cancelar</button>
+        </div>
       </section>
     `;
 
@@ -62,6 +67,7 @@ export default () => {
     const deleteButton = container.querySelectorAll('[data-delete]');
     deleteButton.forEach((element) => {
       element.addEventListener('click', (event) => {
+        // eslint-disable-next-line no-alert
         if (window.confirm('Tem certeza que deseja deletar essa publicação?')) {
           const postCard = container.querySelector(['data-postcard']);
           deletePost(event.target.dataset.delete);
@@ -75,22 +81,26 @@ export default () => {
     const editButton = container.querySelectorAll('[data-edit]');
     editButton.forEach((element) => {
       element.addEventListener('click', (event) => {
-        const divButtons = container.querySelector(`[data-buttons='${event.target.dataset.edit}']`);
-        const divText = container.querySelector(`[data-text='${event.target.dataset.edit}']`);
+        const postId = event.target.dataset.edit;
+        const divButtons = container.querySelector(`[data-buttons='${postId}']`);
+        const divEdit = container.querySelector(`#save-cancel${postId}`);
+        const textArea = container.querySelector(`#post-text${postId}`);
+        const postedText = container.querySelector(`[data-posted='${postId}']`);
+        const saveButton = container.querySelector(`#save${postId}`);
+        const cancelButton = container.querySelector(`#cancel${postId}`);
 
-        divText.innerHTML = `
-        <textarea data-posted='${event.target.dataset.edit}' id='posted'></textarea>
-        `;
-        divButtons.innerHTML = `
-        <button data-save='${event.target.dataset.edit}' id='save'>Salvar</button>
-        <button data-cancel='${event.target.dataset.edit}'id='cancel'>Cancelar</button>
-        `;
-        const postedText = container.querySelector(`[data-posted='${event.target.dataset.edit}']`);
-        const saveButton = container.querySelector('[data-save]');
-        const cancelButton = container.querySelector('#cancel');
+        divEdit.removeAttribute('class');
+        divButtons.setAttribute('class', 'hidden');
+        textArea.removeAttribute('disabled');
 
         saveButton.addEventListener('click', () => {
-          editPost(event.target.dataset.edit, postedText.value);
+          editPost(postId, postedText.value);
+        });
+
+        cancelButton.addEventListener('click', () => {
+          divEdit.setAttribute('class', 'hidden');
+          divButtons.removeAttribute('class');
+          textArea.setAttribute('disabled', true);
         });
       });
     });
@@ -101,11 +111,9 @@ export default () => {
         if (post.likes.includes(auth.currentUser.uid)) {
           dislikePost(event.target.dataset.like, auth.currentUser.uid);
           post.likes.splice(post.likes.indexOf(auth.currentUser.uid));
-          likeButton.innerHTML = `<button data-like='${event.target.dataset.like}'id='btn-like' class='numero-curtidas'>${post.likes.length}</button>`;
         } else {
           likePost(event.target.dataset.like, auth.currentUser.uid);
           post.likes.push(auth.currentUser.uid);
-          likeButton.innerHTML = `<button data-like='${event.target.dataset.like}'id='btn-like' class='numero-curtidas'>${post.likes.length}</button>`;
         }
       });
     });
@@ -124,6 +132,7 @@ export default () => {
       newPost(textPost.value);
       textPost.value = '';
     } else {
+      // eslint-disable-next-line no-alert
       window.alert('Por favor, digite o que deseja compartilhar.');
     }
   });

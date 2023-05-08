@@ -36,10 +36,6 @@ export default () => {
       signUp(email.value, password.value, name.value)
         .then(() => {
           window.location.hash = '#login';
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
         });
     }
   }

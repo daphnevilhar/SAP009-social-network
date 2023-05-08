@@ -47,9 +47,10 @@ const db = getFirestore(app);
 
 // eslint-disable-next-line max-len
 export const signUp = async (email, password, name) => {
-  await createUserWithEmailAndPassword(auth, email, password, name);
+  const authentication = getAuth(app);
+  await createUserWithEmailAndPassword(authentication, email, password);
 
-  return updateProfile(auth.currentUser, {
+  return updateProfile(authentication.currentUser, {
     displayName: name,
   });
 };
@@ -59,18 +60,18 @@ export const signIn = (email, password) => signInWithEmailAndPassword(auth, emai
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 export const newPost = async (textPost) => {
+  const authentication = getAuth(app);
   const post = {
-    userId: auth.currentUser.uid,
-    username: auth.currentUser.displayName,
+    userId: authentication.currentUser.uid,
+    username: authentication.currentUser.displayName,
     date: new Date(Date.now()),
     post: textPost,
     likes: [],
   };
 
   const docRef = await addDoc(collection(db, 'posts'), post);
-  post.id = docRef.id;
 
-  return post;
+  return { ...post, id: docRef.id };
 };
 
 export const accessPost = async (exibirPost, clearPost) => {
@@ -86,11 +87,9 @@ export const accessPost = async (exibirPost, clearPost) => {
   });
 };
 
-export const editPost = async (postId, textArea) => {console.log(db) 
-  return updateDoc(doc(db, 'posts', postId), {
+export const editPost = async (postId, textArea) => updateDoc(doc(db, 'posts', postId), {
   post: textArea,
 });
-}
 
 export const deletePost = async (postId) => deleteDoc(doc(db, 'posts', postId));
 

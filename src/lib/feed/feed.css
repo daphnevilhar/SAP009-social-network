@@ -1,4 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,300&display=swap');
 
+:root {
+  --first-color: #7B1FA2;
+  --second-color: #FFFFFF;
+
+  --first-font: 'Raleway', sans-serif;
+}
+
+.feed__post-list{
+  width: 90%;
+}
 
 .icons {
   width: 36px;
@@ -9,6 +20,7 @@
 .homeheader {
   display: flex;
   justify-content: space-between;
+  background-color: var(--first-color);
 }
 
 .feed {
@@ -16,76 +28,105 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  background-color: var(--first-color);
 }
 
 .feed__new-post {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-style: solid;
   border-width: 1px;
-  border-radius: 5px;
-  border-color: #7B1FA2;
+  border-radius: 10px;
+  background-color: var(--second-color);
   width: 90%;
 }
 
 .button {
-  background-color: #FFFF ;
-  color: #7B1FA2;
+  background-color: var(--first-color) ;
+  color: var(--second-color);
   font-size: 1rem;
-  padding: 5px 12px;
+  padding: 2px 9px;
   border-radius: 5px;
   display: flex;
   align-self: self-end;
-  margin-right: 5%;
-  margin-bottom: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .textarea {
   margin: 1rem;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 90%;
-}
-
-.feed__post-list {
-  max-width: 90%;
 }
 
 .post__card {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin: 1px 0 10px 0;
   border-style: solid;
   border-width: 1px;
   border-color: #7B1FA2;
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: var(--second-color);
 }
 
 .post__card__info {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-width: 90%;
+  width: 100%;
+  font-family: var(--first-font);
 }
 
 .post__card__text{
-  max-width: 90%;
+  width: 90%;
 }
 
-#post-text {
-  text-align: justify;
+.posted-text {
+  width: 100%;
 }
 
 .post__card__buttons {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  max-width: 90%;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.homefooter {
+.icons-btn {
+  width: 24px;
+  height: 24px;
+}
+
+.likes {
   display: flex;
-  justify-content: space-between;
-  align-self: flex-end;
-  position: relative;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.likes-number {
+  color: var(--first-color);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+
+  .post__card {
+    width: 53%
+  }
+  .feed__new-post {
+     width: 50%;
+  }
+  .feed__post-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

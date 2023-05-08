@@ -22,7 +22,6 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    max-width: 90%;
 }
 
 .container__login__info__logo {
@@ -44,6 +43,7 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.719), 0 6px 20px 0 rgba(0, 0, 0, 0.577);
 }
 
 .container__login__form__input {
@@ -68,4 +68,17 @@
     border-radius: 60%;
     width: 15%;
     padding: 1%;
+}
+
+@media (min-width: 768px) {
+
+    #container__login {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .container__login__form {
+        padding: 10% 5%;
+    }
+
 }

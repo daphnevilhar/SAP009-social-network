@@ -44,6 +44,7 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.719), 0 6px 20px 0 rgba(0, 0, 0, 0.577);
 }
 
 
@@ -62,4 +63,17 @@
     border-radius: 5px;
     margin: 2px 0px 2px 0px;
     width: 150px;
+}
+
+@media (min-width: 768px) {
+
+    #container__signup {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .container__signup__form {
+        padding: 10% 5%;
+    }
+
 }
